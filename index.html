@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TechGear - Electronics Store</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 15px;
+        }
+
+        /* Header Styles */
+        header {
+            background: linear-gradient(135deg, #1a2a6c, #204ecf);
+            color: white;
+            padding: 1rem 0;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.8rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+        }
+
+        .logo i {
+            margin-right: 10px;
+            color: #ffd700;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+        }
+
+        nav ul li {
+            margin-left: 1.5rem;
+        }
+
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+            padding: 0.5rem 0;
+        }
+
+        nav ul li a:hover {
+            color: #ffd700;
+        }
+
+        .cart-icon {
+            position: relative;
+            font-size: 1.3rem;
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            background: #ff4757;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1550009158-9ebf69173e03?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1200&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .hero h1 {
+            font-size: 2.8rem;
+            margin-bottom: 1rem;
+        }
+
+        .hero p {
+            font-size: 1.2rem;
+            max-width: 700px;
+            margin: 0 auto 1.5rem;
+        }
+
+        .btn {
+            display: inline-block;
+            background: #204ecf;
+            color: white;
+            padding: 0.8rem 1.8rem;
+            border-radius: 4px;
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #1a3aa5;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        /* Products Section */
+        .section-title {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            font-size: 2rem;
+            color: #1a2a6c;
+            position: relative;
+        }
+
+        .section-title:after {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 4px;
+            background: #204ecf;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            border-radius: 2px;
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+        }
+
+        .product-img {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .product-img img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-img img {
+            transform: scale(1.05);
+        }
+
+        .product-info {
+            padding: 1.5rem;
+        }
+
+        .product-title {
+            font-size: 1.2rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .product-price {
+            color: #204ecf;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .product-price span {
+            font-size: 0.9rem;
+            color: #777;
+            text-decoration: line-through;
+            margin-left: 5px;
+        }
+
+        .add-to-cart {
+            width: 100%;
+            background: #28a745;
+            color: white;
+            padding: 0.7rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s;
+        }
+
+        .add-to-cart:hover {
+            background: #218838;
+        }
+
+        /* Cart Page */
+        .cart-page {
+            display: none;
+        }
+
+        .cart-container {
+            background: white;
+            border-radius: 8px;
+            padding: 2rem;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.08);
+            margin-bottom: 3rem;
+        }
+
+        .cart-items {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 2rem;
+        }
+
+        .cart-items th {
+            text-align: left;
+            padding: 1rem;
+            border-bottom: 2px solid #eee;
+            color: #1a2a6c;
+        }
+
+        .cart-items td {
+            padding: 1rem;
+            border-bottom: 1px solid #eee;
+        }
+
+        .cart-item-img {
+            width: 80px;
+            height: 80px;
+            object-fit: cover;
+            border-radius: 4px;
+        }
+
+        .quantity-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        .quantity-btn {
+            width: 30px;
+            height: 30px;
+            background: #f1f3f5;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        .quantity {
+            margin: 0 10px;
+            font-weight: 600;
+        }
+
+        .remove-item {
+            color: #ff4757;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.2rem;
+        }
+
+        .cart-summary {
+            background: #f8f9fa;
+            padding: 1.5rem;
+            border-radius: 8px;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 1rem;
+            font-size: 1.1rem;
+        }
+
+        .summary-row.total {
+            font-size: 1.4rem;
+            font-weight: 700;
+            color: #1a2a6c;
+            border-top: 2px solid #ddd;
+            padding-top: 1rem;
+            margin-top: 1rem;
+        }
+
+        /* Footer */
+        footer {
+            background: #1a2a6c;
+            color: white;
+            padding: 3rem 0 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .footer-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .footer-column h3 {
+            font-size: 1.3rem;
+            margin-bottom: 1.2rem;
+            position: relative;
+            padding-bottom: 0.5rem;
+        }
+
+        .footer-column h3:after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            background: #ffd700;
+            bottom: 0;
+            left: 0;
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column ul li {
+            margin-bottom: 0.8rem;
+        }
+
+        .footer-column ul li a {
+            color: #ddd;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-column ul li a:hover {
+            color: #ffd700;
+        }
+
+        .copyright {
+            text-align: center;
+            padding-top: 1.5rem;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            font-size: 0.9rem;
+            color: #aaa;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .header-content {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            nav ul {
+                margin-top: 1rem;
+                justify-content: center;
+            }
+            
+            nav ul li {
+                margin: 0 0.75rem;
+            }
+            
+            .hero h1 {
+                font-size: 2.2rem;
+            }
+            
+            .cart-items {
+                display: block;
+                overflow-x: auto;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-content">
+            <div class="logo">
+                <i class="fas fa-laptop"></i>
+                TechGear
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="#" class="nav-home">Home</a></li>
+                    <li><a href="#" class="nav-products">Products</a></li>
+                    <li><a href="#" class="nav-cart">
+                        <div class="cart-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                            <span class="cart-count">0</span>
+                        </div>
+                    </a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Home Page -->
+    <div class="home-page">
+        <!-- Hero Section -->
+        <section class="hero">
+            <div class="container">
+                <h1>Premium Electronics & Tech Gadgets</h1>
+                <p>Discover the latest tech products at unbeatable prices. From smartphones to laptops, we have everything you need for the digital age.</p>
+                <a href="#" class="btn nav-products">Shop Now</a>
+            </div>
+        </section>
+
+        <!-- Products Section -->
+        <section class="products-section">
+            <div class="container">
+                <h2 class="section-title">Featured Products</h2>
+                <div class="products-grid">
+                    <!-- Products will be dynamically generated by JavaScript -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Cart Page -->
+    <div class="cart-page">
+        <div class="container">
+            <h2 class="section-title">Your Shopping Cart</h2>
+            <div class="cart-container">
+                <table class="cart-items">
+                    <thead>
+                        <tr>
+                            <th>Product</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Total</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody class="cart-items-body">
+                        <!-- Cart items will be dynamically generated by JavaScript -->
+                    </tbody>
+                </table>
+                
+                <div class="cart-summary">
+                    <div class="summary-row">
+                        <span>Subtotal</span>
+                        <span class="subtotal">$0.00</span>
+                    </div>
+                    <div class="summary-row">
+                        <span>Shipping</span>
+                        <span class="shipping">$5.99</span>
+                    </div>
+                    <div class="summary-row total">
+                        <span>Total</span>
+                        <span class="total-price">$5.99</span>
+                    </div>
+                    <button class="btn checkout-btn" style="width: 100%; margin-top: 1.5rem;">Proceed to Checkout</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-column">
+                    <h3>TechGear</h3>
+                    <p>Your one-stop shop for the latest electronics and tech gadgets. We bring you quality products at competitive prices.</p>
+                </div>
+                <div class="footer-column">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#" class="nav-home">Home</a></li>
+                        <li><a href="#" class="nav-products">Products</a></li>
+                        <li><a href="#" class="nav-cart">Cart</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h3>Contact Us</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> 123 Tech Street, Digital City</li>
+                        <li><i class="fas fa-phone"></i> (123) 456-7890</li>
+                        <li><i class="fas fa-envelope"></i> info@techgear.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="copyright">
+                &copy; 2023 TechGear. All rights reserved.
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Product data
+        const products = [
+            {
+                id: 1,
+                name: "Wireless Bluetooth Headphones",
+                price: 89.99,
+                originalPrice: 129.99,
+                image: "https://images.unsplash.com/photo-1505740420928-5e560c06d30e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                description: "Noise-cancelling over-ear headphones with 30hr battery life"
+            },
+            {
+                id: 2,
+                name: "Smart Watch Pro",
+                price: 249.99,
+                originalPrice: 299.99,
+                image: "https://images.unsplash.com/photo-1523275335684-37898b6baf30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                description: "Fitness tracker with heart rate monitor and GPS"
+            },
+            {
+                id: 3,
+                name: "Gaming Laptop",
+                price: 1299.99,
+                originalPrice: 1599.99,
+                image: "https://images.unsplash.com/photo-1603302576837-37561b2e2302?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                description: "High-performance laptop with RTX 4070 and 16GB RAM"
+            },
+            {
+                id: 4,
+                name: "Smartphone X Pro",
+                price: 999.99,
+                originalPrice: 1199.99,
+                image: "https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                description: "Flagship smartphone with 200MP camera and 5G"
+            },
+            {
+                id: 5,
+                name: "Wireless Keyboard & Mouse",
+                price: 69.99,
+                originalPrice: 89.99,
+                image: "https://images.unsplash.com/photo-1587829741301-dc798b83add3?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80",
+                description: "Ergonomic keyboard and mouse combo"
+            },
+            {
+                id: 6,
+                name: "Tablet Pro 12.9",
+                price: 899.99,
+                originalPrice: 1099.99,
+                image: "phtoto.jpg.jpg",
+            
+                description: "Professional tablet with stylus support"
+            }
+        ];
+
+        // Cart state
+        let cart = [];
+
+        // DOM elements
+        const homePage = document.querySelector('.home-page');
+        const cartPage = document.querySelector('.cart-page');
+        const productsGrid = document.querySelector('.products-grid');
+        const cartItemsBody = document.querySelector('.cart-items-body');
+        const cartCount = document.querySelector('.cart-count');
+        const subtotalEl = document.querySelector('.subtotal');
+        const totalPriceEl = document.querySelector('.total-price');
+        
+        // Navigation elements
+        const navHome = document.querySelector('.nav-home');
+        const navProducts = document.querySelectorAll('.nav-products');
+        const navCart = document.querySelector('.nav-cart');
+
+        // Initialize the app
+        function init() {
+            renderProducts();
+            updateCartDisplay();
+            setupEventListeners();
+        }
+
+        // Render products on the home page
+        function renderProducts() {
+            productsGrid.innerHTML = '';
+            
+            products.forEach(product => {
+                const productCard = document.createElement('div');
+                productCard.className = 'product-card';
+                
+                // Check if product is in cart
+                const cartItem = cart.find(item => item.id === product.id);
+                const buttonText = cartItem ? `Added (${cartItem.quantity})` : 'Add to Cart';
+                const buttonClass = cartItem ? 'add-to-cart added' : 'add-to-cart';
+                
+                productCard.innerHTML = `
+                    <div class="product-img">
+                        <img src="${product.image}" alt="${product.name}">
+                    </div>
+                    <div class="product-info">
+                        <h3 class="product-title">${product.name}</h3>
+                        <p class="product-description">${product.description}</p>
+                        <div class="product-price">
+                            $${product.price.toFixed(2)}
+                            <span>$${product.originalPrice.toFixed(2)}</span>
+                        </div>
+                        <button class="${buttonClass}" data-id="${product.id}">
+                            ${buttonText}
+                        </button>
+                    </div>
+                `;
+                
+                productsGrid.appendChild(productCard);
+            });
+        }
+
+        // Update cart display
+        function updateCartDisplay() {
+            // Update cart count
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            // Render cart items if on cart page
+            if (cartPage.style.display === 'block') {
+                renderCartItems();
+                updateCartSummary();
+            }
+            
+            // Update product buttons
+            document.querySelectorAll('.add-to-cart').forEach(button => {
+                const productId = parseInt(button.getAttribute('data-id'));
+                const cartItem = cart.find(item => item.id === productId);
+                
+                if (cartItem) {
+                    button.textContent = `Added (${cartItem.quantity})`;
+                    button.classList.add('added');
+                } else {
+                    button.textContent = 'Add to Cart';
+                    button.classList.remove('added');
+                }
+            });
+        }
+
+        // Render cart items
+        function renderCartItems() {
+            cartItemsBody.innerHTML = '';
+            
+            if (cart.length === 0) {
+                cartItemsBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; padding: 3rem;">
+                            <h3>Your cart is empty</h3>
+                            <p>Add some products to your cart!</p>
+                            <button class="btn nav-products" style="margin-top: 1rem;">Browse Products</button>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            cart.forEach(item => {
+                const product = products.find(p => p.id === item.id);
+                const itemTotal = product.price * item.quantity;
+                
+                const cartItemRow = document.createElement('tr');
+                cartItemRow.className = 'cart-item';
+                cartItemRow.innerHTML = `
+                    <td>
+                        <div style="display: flex; align-items: center;">
+                            <img src="${product.image}" alt="${product.name}" class="cart-item-img">
+                            <div style="margin-left: 1rem;">
+                                <strong>${product.name}</strong><br>
+                                <small>${product.description}</small>
+                            </div>
+                        </div>
+                    </td>
+                    <td>$${product.price.toFixed(2)}</td>
+                    <td>
+                        <div class="quantity-controls">
+                            <button class="quantity-btn decrease" data-id="${product.id}">-</button>
+                            <span class="quantity">${item.quantity}</span>
+                            <button class="quantity-btn increase" data-id="${product.id}">+</button>
+                        </div>
+                    </td>
+                    <td>$${itemTotal.toFixed(2)}</td>
+                    <td>
+                        <button class="remove-item" data-id="${product.id}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                
+                cartItemsBody.appendChild(cartItemRow);
+            });
+        }
+
+        // Update cart summary
+        function updateCartSummary() {
+            const subtotal = cart.reduce((sum, item) => {
+                const product = products.find(p => p.id === item.id);
+                return sum + (product.price * item.quantity);
+            }, 0);
+            
+            const shipping = subtotal > 0 ? 5.99 : 0;
+            const total = subtotal + shipping;
+            
+            subtotalEl.textContent = `$${subtotal.toFixed(2)}`;
+            totalPriceEl.textContent = `$${total.toFixed(2)}`;
+        }
+
+        // Add to cart
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            
+            const existingItem = cart.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({
+                    id: productId,
+                    quantity: 1
+                });
+            }
+            
+            updateCartDisplay();
+        }
+
+        // Remove from cart
+        function removeFromCart(productId) {
+            cart = cart.filter(item => item.id !== productId);
+            updateCartDisplay();
+        }
+
+        // Update quantity
+        function updateQuantity(productId, change) {
+            const item = cart.find(item => item.id === productId);
+            
+            if (item) {
+                item.quantity += change;
+                
+                if (item.quantity <= 0) {
+                    removeFromCart(productId);
+                } else {
+                    updateCartDisplay();
+                }
+            }
+        }
+
+        // Setup event listeners
+        function setupEventListeners() {
+            // Navigation
+            navHome.addEventListener('click', (e) => {
+                e.preventDefault();
+                homePage.style.display = 'block';
+                cartPage.style.display = 'none';
+            });
+            
+            navProducts.forEach(nav => {
+                nav.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    homePage.style.display = 'block';
+                    cartPage.style.display = 'none';
+                    window.scrollTo({ top: 400, behavior: 'smooth' });
+                });
+            });
+            
+            navCart.addEventListener('click', (e) => {
+                e.preventDefault();
+                homePage.style.display = 'none';
+                cartPage.style.display = 'block';
+                updateCartDisplay();
+            });
+            
+            // Add to cart buttons
+            productsGrid.addEventListener('click', (e) => {
+                if (e.target.classList.contains('add-to-cart')) {
+                    const productId = parseInt(e.target.getAttribute('data-id'));
+                    addToCart(productId);
+                }
+            });
+            
+            // Cart item controls
+            cartItemsBody.addEventListener('click', (e) => {
+                const productId = parseInt(e.target.closest('button').getAttribute('data-id'));
+                
+                if (e.target.closest('.increase')) {
+                    updateQuantity(productId, 1);
+                } else if (e.target.closest('.decrease')) {
+                    updateQuantity(productId, -1);
+                } else if (e.target.closest('.remove-item')) {
+                    removeFromCart(productId);
+                }
+            });
+            
+            // Checkout button
+            document.querySelector('.checkout-btn').addEventListener('click', () => {
+                if (cart.length === 0) {
+                    alert('Your cart is empty! Add some products first.');
+                    return;
+                }
+                
+                const total = parseFloat(totalPriceEl.textContent.replace('$', ''));
+                alert(`Thank you for your order! Total: $${total.toFixed(2)}\nThis is a demo store, so no actual purchase was made.`);
+                
+                // Clear cart after checkout
+                cart = [];
+                updateCartDisplay();
+                
+                // Go back to home page
+                homePage.style.display = 'block';
+                cartPage.style.display = 'none';
+            });
+            
+            // Footer navigation
+            document.querySelectorAll('.footer-column a').forEach(link => {
+                link.addEventListener('click', (e) => {
+                    if (link.classList.contains('nav-home')) {
+                        e.preventDefault();
+                        navHome.click();
+                    } else if (link.classList.contains('nav-products')) {
+                        e.preventDefault();
+                        navProducts[0].click();
+                    } else if (link.classList.contains('nav-cart')) {
+                        e.preventDefault();
+                        navCart.click();
+                    }
+                });
+            });
+        }
+
+        // Initialize the app when page loads
+        document.addEventListener('DOMContentLoaded', init);
+    </script>
+</body>
+</html>
